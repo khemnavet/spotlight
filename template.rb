@@ -19,16 +19,7 @@ after_bundle do
   generate 'blacklight:install', blacklight_options
 
   # run the spotlight installer
-  generate 'spotlight:install', spotlight_options
-
-  # setup the database
-  database_path = ask('Where would you like to store the production database?')
-  insert_into_file 'config/database.yml', after: "<  # database: path/to/persistent/storage/production.sqlite3\n" do
-    <<-YAML
-    database: #{database_path}/spotlight_production.sqlite3
-    YAML
-  end  
-
+  generate 'spotlight:install', spotlight_options  
   rake 'spotlight:install:migrations'
 
   # create an initial administrator (if we are running interactively..)
@@ -42,4 +33,14 @@ insert_into_file 'config/application.rb', after: "< Rails::Application\n" do
   <<-CONFIG
   config.active_job.queue_adapter = ENV["RAILS_QUEUE"]&.to_sym || :sidekiq
   CONFIG
+end
+
+if ENV['RAILS_ENV'] == 'production'
+  # setup the database
+  database_path = ask('Where would you like to store the production database?')
+  insert_into_file 'config/database.yml', after: "<  # database: path/to/persistent/storage/production.sqlite3\n" do
+    <<-YAML
+    database: #{database_path}/spotlight_production.sqlite3
+    YAML
+  end
 end
