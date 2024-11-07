@@ -27,6 +27,7 @@ after_bundle do
     <<-YAML
     database: #{database_path}/spotlight_production.sqlite3
     YAML
+  end  
 
   rake 'spotlight:install:migrations'
 
