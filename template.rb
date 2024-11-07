@@ -40,7 +40,7 @@ if ENV['RAILS_ENV'] == 'production'
   database_path = ask('Where would you like to store the production database?')
   insert_into_file 'config/database.yml', after: "# database: path/to/persistent/storage/production.sqlite3\n" do
     <<-YAML
-    database: #{database_path}/spotlight_production.sqlite3
+  database: #{database_path}/spotlight_production.sqlite3
     YAML
   end
 end
